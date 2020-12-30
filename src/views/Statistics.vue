@@ -1,8 +1,5 @@
 <template>
-  <div>
-    统计
-    <Nav />
-  </div>
+  <Layout>统计</Layout>
 </template>
 <script lang="ts">
 import Vue from "vue";

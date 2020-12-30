@@ -1,8 +1,5 @@
 <template>
-  <div>
-    记账
-    <Nav />
-  </div>
+  <Layout>记账</Layout>
 </template>
 <script lang="ts">
 import Vue from "vue";
