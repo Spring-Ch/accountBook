@@ -1,13 +1,39 @@
 <template>
-  <div>
-    <router-link to="/labels">标签<Icon name="label" /> </router-link>|
-    <router-link to="/money">记账 <Icon name="money" /></router-link>|
-    <router-link to="/statistics">统计<Icon name="static" /></router-link>
-  </div>
+  <nav>
+    <router-link to="/labels" class="item" active-class="selected"
+      ><Icon name="label" />标签
+    </router-link>
+    <router-link to="/money" class="item" active-class="selected"
+      ><Icon name="money" />记账
+    </router-link>
+    <router-link to="/statistics" class="item" active-class="selected"
+      ><Icon name="static" />统计
+    </router-link>
+  </nav>
 </template>
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({});
 </script>
 <style lang="scss" scoped>
+nav {
+  display: flex;
+  font-size: 12px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  .item {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0.33;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 0;
+  }
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+  .selected {
+    color: green;
+  }
+}
 </style>
