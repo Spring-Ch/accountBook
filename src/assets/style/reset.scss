@@ -10,3 +10,10 @@ a {
 li {
   list-style: none;
 }
+button,
+input {
+  font: inherit;
+}
+:focus {
+  outline: none;
+}
