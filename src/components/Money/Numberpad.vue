@@ -23,14 +23,15 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class NumberPad extends Vue {
+  @Prop() amount!: number;
   // 输出的默认值是0
-  output = "0";
+  output = this.amount.toString();
   // 控制数字按键进行输入
-  inputContent(event) {
+  inputContent(event: MouseEvent) {
     // 设置变量放置button标签中的内容
     const inputValue = event.target.textContent;
     // 控制输出最多为16位
@@ -59,7 +60,7 @@ export default class NumberPad extends Vue {
   }
   //确定，提交功能
   ok() {
-    console.log("ok");
+    this.$emit("update:amount", parseFloat(this.output));
   }
 }
 </script>

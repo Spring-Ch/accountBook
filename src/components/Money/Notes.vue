@@ -6,11 +6,15 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 
 @Component
 export default class Note extends Vue {
   note = "";
+  @Watch("note")
+  onNoteChanged(note: string) {
+    this.$emit("update:note", note);
+  }
 }
 </script>
 <style lang="scss" scoped>

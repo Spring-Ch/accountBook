@@ -2,7 +2,7 @@
   <div class="tags">
     <ul class="current">
       <li
-        v-for="(tag, i) in dataSource"
+        v-for="(tag, i) in tags"
         :key="i"
         @click="toggle(tag)"
         :class="{ selected: selectedTag.indexOf(tag) >= 0 }"
@@ -22,7 +22,7 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Tags extends Vue {
   //定义一个属性，用来放置标签内容的数组，有外部传入
-  @Prop(Array) dataSource: string[] | undefined;
+  @Prop(Array) readonly tags: string[] | undefined;
   //设置一个数组，用来放置被选中的标签
   selectedTag: string[] = [];
   // 选中元素后，将其放到selectedTag数组中
@@ -39,8 +39,8 @@ export default class Tags extends Vue {
     const tagName: string | null = window.prompt("请输入新的标签名");
     if (tagName && tagName.trim() === "") {
       window.alert("标签名不能为空");
-    } else if (this.dataSource) {
-      this.$emit("update:dataSource", [...this.dataSource, tagName]);
+    } else if (this.tags) {
+      this.$emit("update:tags", [...this.tags, tagName]);
     }
   }
 }
