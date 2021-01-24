@@ -24,7 +24,7 @@ export default class Tags extends Vue {
   //定义一个属性，用来放置标签内容的数组，有外部传入
   @Prop(Array) readonly tags: string[] | undefined;
   //设置一个数组，用来放置被选中的标签
-  selectedTag: string[] = [];
+  @Prop(Array) readonly selectedTag!: string[];
   // 选中元素后，将其放到selectedTag数组中
   toggle(tag: string) {
     const index: number = this.selectedTag.indexOf(tag);
@@ -33,6 +33,7 @@ export default class Tags extends Vue {
     } else {
       this.selectedTag.push(tag);
     }
+    this.$emit("update:selectedTag", this.selectedTag);
   }
   // 添加新标签
   create() {

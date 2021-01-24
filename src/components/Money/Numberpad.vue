@@ -1,5 +1,4 @@
 
-
 <template>
   <div class="numberPad">
     <div class="output">{{ output }}</div>
@@ -27,20 +26,20 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class NumberPad extends Vue {
-  @Prop() amount!: number;
+  @Prop() readonly amount!: number;
   // 输出的默认值是0
-  output = this.amount.toString();
+  output = "0";
   // 控制数字按键进行输入
   inputContent(event: MouseEvent) {
     // 设置变量放置button标签中的内容
-    const inputValue = event.target.textContent;
+    const inputValue = (event.target as HTMLButtonElement).textContent;
     // 控制输出最多为16位
     if (this.output.length < 16) {
       if (this.output.indexOf(".") >= 0 && inputValue === ".") {
         return;
       }
       if (this.output === "0" && inputValue !== ".") {
-        this.output = inputValue;
+        this.output = inputValue as string;
       } else {
         this.output += inputValue;
       }
@@ -60,7 +59,13 @@ export default class NumberPad extends Vue {
   }
   //确定，提交功能
   ok() {
-    this.$emit("update:amount", parseFloat(this.output));
+    if (this.output === "0") {
+      window.alert("请输入实际金额");
+    } else {
+      this.$emit("update:amount", parseFloat(this.output));
+      this.$emit("submit", parseFloat(this.output));
+      this.output = "0";
+    }
   }
 }
 </script>
