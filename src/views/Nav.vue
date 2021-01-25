@@ -33,7 +33,7 @@ nav {
     height: 32px;
   }
   .selected {
-    color: green;
+    color: red;
   }
 }
 </style>

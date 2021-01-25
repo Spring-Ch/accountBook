@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    {{ recordList }}
     <Tags :tags.sync="tags" :selectedTag.sync="record.selectedTag" />
     <Notes @update:note="onUpdateNote" />
     <Types :type.sync="record.type" />
