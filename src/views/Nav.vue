@@ -13,7 +13,11 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-export default Vue.extend({});
+import Icon from "@/components/Icon.vue";
+
+export default Vue.extend({
+  components: { Icon },
+});
 </script>
 <style lang="scss" scoped>
 nav {

@@ -1,4 +1,4 @@
-const model = {
+const recordListModel = {
   // 获取localStorage中存取数据
   fetch() {
     return JSON.parse(
@@ -14,4 +14,4 @@ const model = {
     return JSON.parse(JSON.stringify(data));
   },
 };
-export default model;
+export default recordListModel;

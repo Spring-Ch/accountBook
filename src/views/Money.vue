@@ -13,9 +13,9 @@ import Notes from "@/components/Money/Notes.vue";
 import Types from "@/components/Money/Types.vue";
 import Numberpad from "@/components/Money/Numberpad.vue";
 import { Component, Watch } from "vue-property-decorator";
-import model from "@/model.ts";
+import recordListModel from "@/models/recordListModel.ts";
+import tagListModel from "@/models/tagListModel.ts";
 
-const recordList = model.fetch();
 type recordItem = {
   selectedTag: string[];
   note: string;
@@ -27,8 +27,12 @@ type recordItem = {
   components: { Tags, Notes, Types, Numberpad },
 })
 export default class Money extends Vue {
-  recordList: recordItem[] = recordList;
-  tags: string[] = ["衣", "食", "住", "行"];
+  recordList: recordItem[] = [];
+  tags: string[] = [];
+  created() {
+    this.tags = tagListModel.fetch();
+    this.recordList = recordListModel.fetch();
+  }
   record: recordItem = {
     selectedTag: [],
     note: "",
@@ -40,14 +44,14 @@ export default class Money extends Vue {
   }
   saveRecord() {
     //将record进行深拷贝
-    const record2 = model.clone(this.record);
+    const record2 = recordListModel.clone(this.record);
     // 为record2添加创造时间属性
     record2.createAt = new Date();
     this.recordList.push(record2);
   }
   @Watch("recordList")
   onRecordListChanged() {
-    model.save(this.recordList);
+    recordListModel.save(this.recordList);
   }
 }
 </script>
