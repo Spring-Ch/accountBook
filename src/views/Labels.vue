@@ -1,8 +1,8 @@
 <template>
   <Layout>
     <ol class="tags">
-      <li v-for="(tag, i) in tags" :key="i">
-        <span>{{ tag }}</span> <Icon name="right" />
+      <li v-for="tag in tags" :key="tag.id">
+        <span>{{ tag.name }}</span> <Icon name="right" />
       </li>
     </ol>
     <div class="newTagWrapper">
@@ -16,23 +16,28 @@ import Icon from "@/components/Icon.vue";
 import { Component } from "vue-property-decorator";
 import tagListModel from "@/models/tagListModel.ts";
 
+type Tag = {
+  id: string;
+  name: string;
+};
 @Component({
   components: { Icon },
 })
 export default class Labels extends Vue {
-  tags: string[] = [];
+  tags: Tag[] = [];
   created() {
     this.tags = tagListModel.fetch();
   }
   // 新建标签
   createTag() {
     const newTagName = window.prompt("请输入新的标签名") as string;
+    const names: string[] = this.tags.map((item) => item.name);
     if (newTagName === "" || newTagName.trim() === "") {
       window.alert("标签名不能为空");
-    } else if (this.tags.indexOf(newTagName) >= 0) {
+    } else if (names.indexOf(newTagName) >= 0) {
       window.alert("标签名已存在，请输入新的标签名");
     } else {
-      this.tags.push(newTagName);
+      this.tags.push({ id: newTagName, name: newTagName });
     }
     tagListModel.save(this.tags);
   }
