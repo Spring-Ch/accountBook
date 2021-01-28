@@ -1,17 +1,19 @@
 <template>
   <Layout>
     <div class="header">
-      <Icon name="left" />
+      <router-link to="/labels">
+        <Icon name="left" />
+      </router-link>
       <span>编辑标签</span>
     </div>
     <div class="note-wrapper">
       <label class="notes">
         <span class="name">标签名</span>
-        <input type="text" v-model="name" />
+        <input type="text" v-model="name" @input="onNameChanged" />
       </label>
     </div>
     <div class="button-wrapper">
-      <button>删除标签</button>
+      <button @click="deleteTag">删除标签</button>
     </div>
   </Layout>
 </template>
@@ -20,19 +22,55 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import tagListModel from "@/models/tagListModel.ts";
 
+type Tag = {
+  id: string;
+  name: string;
+};
+
 @Component
 export default class EditLabel extends Vue {
+  id = "";
   name = "";
+  tags: Tag[] = [];
   created() {
-    const id = this.$route.params.id;
-    const tags = tagListModel.fetch();
-    const tag = tags.filter((item: { id: string }) => item.id === id)[0];
+    this.id = this.$route.params.id;
+    this.tags = tagListModel.fetch();
+    const tag = this.tags.filter(
+      (item: { id: string }) => item.id === this.id
+    )[0];
     this.name = tag.name;
     if (tag) {
       console.log(tag);
     } else {
       this.$router.push("/404");
     }
+  }
+  // 修改标签名
+  onNameChanged() {
+    //   const names: string[] = this.tags.map((item) => item.name);
+    // if (newTagName === "" || newTagName.trim() === "") {
+    //   window.alert("标签名不能为空");
+    // } else if (names.indexOf(newTagName) >= 0) {
+    //   window.alert("标签名已存在，请输入新的标签名");
+    // } else {
+    //   this.tags.push({ id: newTagName, name: newTagName });
+    // }
+
+    const names = this.tags.map((item) => item.name);
+    if (names.indexOf(this.name) >= 0) {
+      window.alert("标签名已存在，请重新输入");
+    } else {
+      const index = this.tags.findIndex((item) => item.id === this.id);
+      this.tags.splice(index, 1, { id: this.id, name: this.name });
+      tagListModel.save(this.tags);
+    }
+  }
+  // 删除标签名
+  deleteTag() {
+    const index = this.tags.findIndex((item) => item.id === this.id);
+    this.tags.splice(index, 1);
+    tagListModel.save(this.tags);
+    this.$router.push("/labels");
   }
 }
 </script>
