@@ -9,7 +9,7 @@
     <div class="note-wrapper">
       <label class="notes">
         <span class="name">标签名</span>
-        <input type="text" v-model="name" @input="onNameChanged" />
+        <input type="text" v-model="name" @change="onNameChanged" />
       </label>
     </div>
     <div class="button-wrapper">
@@ -38,31 +38,24 @@ export default class EditLabel extends Vue {
     const tag = this.tags.filter(
       (item: { id: string }) => item.id === this.id
     )[0];
-    this.name = tag.name;
     if (tag) {
-      console.log(tag);
+      this.name = tag.name;
     } else {
       this.$router.push("/404");
     }
   }
   // 修改标签名
   onNameChanged() {
-    //   const names: string[] = this.tags.map((item) => item.name);
-    // if (newTagName === "" || newTagName.trim() === "") {
-    //   window.alert("标签名不能为空");
-    // } else if (names.indexOf(newTagName) >= 0) {
-    //   window.alert("标签名已存在，请输入新的标签名");
-    // } else {
-    //   this.tags.push({ id: newTagName, name: newTagName });
-    // }
-
     const names = this.tags.map((item) => item.name);
-    if (names.indexOf(this.name) >= 0) {
+    if (this.name === "" || this.name.trim() === "") {
+      window.alert("标签名不能为空");
+    } else if (names.indexOf(this.name) >= 0) {
       window.alert("标签名已存在，请重新输入");
     } else {
       const index = this.tags.findIndex((item) => item.id === this.id);
-      this.tags.splice(index, 1, { id: this.id, name: this.name });
+      this.tags.splice(index, 1, { id: this.name, name: this.name });
       tagListModel.save(this.tags);
+      window.alert("标签修改成功");
     }
   }
   // 删除标签名
