@@ -53,7 +53,7 @@ export default class EditLabel extends Vue {
       window.alert("标签名已存在，请重新输入");
     } else {
       const index = this.tags.findIndex((item) => item.id === this.id);
-      this.tags.splice(index, 1, { id: this.name, name: this.name });
+      this.tags.splice(index, 1, { id: index.toString(), name: this.name });
       tagListModel.save(this.tags);
       window.alert("标签修改成功");
     }

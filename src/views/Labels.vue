@@ -20,6 +20,7 @@ import Vue from "vue";
 import Icon from "@/components/Icon.vue";
 import { Component } from "vue-property-decorator";
 import tagListModel from "@/models/tagListModel.ts";
+import createID from "@/lib/createID.ts";
 
 type Tag = {
   id: string;
@@ -42,7 +43,8 @@ export default class Labels extends Vue {
     } else if (names.indexOf(newTagName) >= 0) {
       window.alert("标签名已存在，请输入新的标签名");
     } else {
-      this.tags.push({ id: newTagName, name: newTagName });
+      const tagID = createID();
+      this.tags.push({ id: tagID, name: newTagName });
     }
     tagListModel.save(this.tags);
   }
