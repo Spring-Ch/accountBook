@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
 import createID from "@/lib/createID.ts";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -67,8 +68,13 @@ const store = new Vuex.Store({
     // 删除标签名
     deleteTag(state, newTag) {
       const index = state.tagList.findIndex((item) => item.id === newTag.id);
-      state.tagList.splice(index, 1);
-      store.commit("saveTagList");
+      if (index >= 0) {
+        state.tagList.splice(index, 1);
+        store.commit("saveTagList");
+        router.push("/labels");
+      } else {
+        window.alert("标签删除失败");
+      }
     },
   },
 
