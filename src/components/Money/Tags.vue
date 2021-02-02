@@ -18,11 +18,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import tagListModel from "@/models/tagListModel.ts";
 
 @Component
 export default class Tags extends Vue {
   //定义一个属性，用来放置标签内容的数组，有外部传入
-  @Prop(Array) readonly tags: string[] | undefined;
+  @Prop(Array) tags: string[] | undefined;
   //设置一个数组，用来放置被选中的标签
   @Prop(Array) readonly selectedTag!: string[];
   // 选中元素后，将其放到selectedTag数组中
@@ -37,12 +38,7 @@ export default class Tags extends Vue {
   }
   // 添加新标签
   create() {
-    const tagName: string | null = window.prompt("请输入新的标签名");
-    if (tagName && tagName.trim() === "") {
-      window.alert("标签名不能为空");
-    } else if (this.tags) {
-      this.$emit("update:tags", [...this.tags, tagName]);
-    }
+    this.$emit("update:tags", tagListModel.create());
   }
 }
 </script>
