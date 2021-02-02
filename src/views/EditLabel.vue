@@ -9,7 +9,7 @@
     <div class="note-wrapper">
       <label class="notes">
         <span class="name">标签名</span>
-        <input type="text" v-model="name" @change="onNameChanged" />
+        <input type="text" v-model="newTag.name" @change="editTag" />
       </label>
     </div>
     <div class="button-wrapper">
@@ -20,49 +20,39 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import tagListModel from "@/models/tagListModel.ts";
 
-type Tag = {
-  id: string;
-  name: string;
-};
-
-@Component
+@Component({
+  computed: {
+    tagList() {
+      return this.$store.state.tagList;
+    },
+  },
+})
 export default class EditLabel extends Vue {
-  id = "";
-  name = "";
-  tags: Tag[] = [];
+  newTag: Tag = {
+    id: "",
+    name: "",
+  };
+
   created() {
-    this.id = this.$route.params.id;
-    this.tags = tagListModel.fetch();
-    const tag = this.tags.filter(
-      (item: { id: string }) => item.id === this.id
+    this.newTag.id = this.$route.params.id;
+    this.$store.commit("getTagList");
+    const tag = this.$store.state.tagList.filter(
+      (item: { id: string }) => item.id === this.newTag.id
     )[0];
-    if (tag) {
-      this.name = tag.name;
-    } else {
+    if (!tag) {
       this.$router.push("/404");
+    } else {
+      this.newTag.name = tag.name;
     }
   }
   // 修改标签名
-  onNameChanged() {
-    const names = this.tags.map((item) => item.name);
-    if (this.name === "" || this.name.trim() === "") {
-      window.alert("标签名不能为空");
-    } else if (names.indexOf(this.name) >= 0) {
-      window.alert("标签名已存在，请重新输入");
-    } else {
-      const index = this.tags.findIndex((item) => item.id === this.id);
-      this.tags.splice(index, 1, { id: index.toString(), name: this.name });
-      tagListModel.save(this.tags);
-      window.alert("标签修改成功");
-    }
+  editTag() {
+    this.$store.commit("editTag", this.newTag);
   }
   // 删除标签名
   deleteTag() {
-    const index = this.tags.findIndex((item) => item.id === this.id);
-    this.tags.splice(index, 1);
-    tagListModel.save(this.tags);
+    this.$store.commit("deleteTag", this.newTag);
     this.$router.push("/labels");
   }
 }

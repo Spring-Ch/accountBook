@@ -2,7 +2,7 @@
   <Layout>
     <div class="tags">
       <router-link
-        v-for="tag in tags"
+        v-for="tag in tagList"
         :key="tag.id"
         :to="`/labels/edit/${tag.id}`"
         class="tag"
@@ -17,26 +17,24 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import Icon from "@/components/Icon.vue";
 import { Component } from "vue-property-decorator";
-import tagListModel from "@/models/tagListModel.ts";
 
-type Tag = {
-  id: string;
-  name: string;
-};
 @Component({
-  components: { Icon },
+  computed: {
+    // 定义标签数组变量
+    tagList() {
+      return this.$store.state.tagList;
+    },
+  },
 })
 export default class Labels extends Vue {
-  tags: Tag[] = [];
   created() {
-    this.tags = tagListModel.fetch();
+    // 当页面生成时，获取标签数组
+    this.$store.commit("getTagList");
   }
   // 新建标签
   createTag() {
-    tagListModel.save(tagListModel.create());
-    this.tags = tagListModel.fetch();
+    this.$store.commit("createTag");
   }
 }
 </script>

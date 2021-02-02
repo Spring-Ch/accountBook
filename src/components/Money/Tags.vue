@@ -2,7 +2,7 @@
   <div class="tags">
     <ul class="current">
       <li
-        v-for="(tag, i) in tags"
+        v-for="(tag, i) in tagList"
         :key="i"
         @click="toggle(tag)"
         :class="{ selected: selectedTag.indexOf(tag) >= 0 }"
@@ -11,19 +11,26 @@
       </li>
     </ul>
     <div class="new">
-      <button @click="create">新增标签</button>
+      <button @click="createTag">新增标签</button>
     </div>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import tagListModel from "@/models/tagListModel.ts";
 
-@Component
+@Component({
+  computed: {
+    tagList() {
+      return this.$store.state.tagList;
+    },
+  },
+})
 export default class Tags extends Vue {
-  //定义一个属性，用来放置标签内容的数组，有外部传入
-  @Prop(Array) tags: string[] | undefined;
+  // 当页面生成时，获取标签数组
+  created() {
+    this.$store.commit("getTagList");
+  }
   //设置一个数组，用来放置被选中的标签
   @Prop(Array) readonly selectedTag!: string[];
   // 选中元素后，将其放到selectedTag数组中
@@ -37,8 +44,8 @@ export default class Tags extends Vue {
     this.$emit("update:selectedTag", this.selectedTag);
   }
   // 添加新标签
-  create() {
-    this.$emit("update:tags", tagListModel.create());
+  createTag() {
+    this.$store.commit("createTag");
   }
 }
 </script>
