@@ -1,18 +1,29 @@
 <template>
   <Layout>
-    <Types :type.sync="selectedType" classPrefix="type" />
+    <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
+    <Tabs :dataSource="intervalList" :type.sync="selectedInterval" />
   </Layout>
 </template>
 <script lang="ts">
 import Vue from "vue";
-import Types from "@/components/Money/Types.vue";
+import Tabs from "@/components/Tabs.vue";
 import { Component } from "vue-property-decorator";
 
 @Component({
-  components: { Types },
+  components: { Tabs },
 })
 export default class Statistics extends Vue {
   selectedType = "-";
+  typeList = [
+    { text: "支出", value: "-" },
+    { text: "收入", value: "+" },
+  ];
+  intervalList = [
+    { text: "按天", value: "day" },
+    { text: "按周", value: "week" },
+    { text: "按月", value: "month" },
+  ];
+  selectedInterval = "day";
 }
 </script>
 <style lang="scss" scoped>
