@@ -2,7 +2,7 @@
   <Layout class-prefix="layout">
     <Tags :selectedTag.sync="record.selectedTag" />
     <Notes @update:note="onUpdateNote" />
-    <Types :type.sync="record.type" />
+    <Tabs :type.sync="record.type" :dataSource="typeList" />
     <Numberpad :amount.sync="record.amount" @submit="editRecordList" />
   </Layout>
 </template>
@@ -10,12 +10,12 @@
 import Vue from "vue";
 import Tags from "@/components/Money/Tags.vue";
 import Notes from "@/components/Money/Notes.vue";
-import Types from "@/components/Money/Types.vue";
+import Tabs from "@/components/Tabs.vue";
 import Numberpad from "@/components/Money/Numberpad.vue";
 import { Component } from "vue-property-decorator";
 
 @Component({
-  components: { Tags, Notes, Types, Numberpad },
+  components: { Tags, Notes, Tabs, Numberpad },
   computed: {
     recordList() {
       return this.$store.state.recordList;
@@ -33,6 +33,10 @@ export default class Money extends Vue {
     type: "-",
     amount: 0,
   };
+  typeList = [
+    { text: "支出", value: "-" },
+    { text: "收入", value: "+" },
+  ];
   onUpdateNote(note: string) {
     this.record.note = note;
   }
