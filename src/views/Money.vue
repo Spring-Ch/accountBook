@@ -27,7 +27,7 @@ export default class Money extends Vue {
     this.$store.commit("getTagList");
     this.$store.commit("getRecordList");
   }
-  record: recordItem = {
+  record: RecordItem = {
     selectedTag: [],
     note: "",
     type: "-",
@@ -44,7 +44,7 @@ export default class Money extends Vue {
     //将record进行深拷贝
     const newRecord = JSON.parse(JSON.stringify(this.record));
     // 为newRecord添加创造时间属性
-    newRecord.createAt = new Date();
+    newRecord.createAt = new Date().toISOString();
     this.$store.commit("editRecordList", newRecord);
   }
 }

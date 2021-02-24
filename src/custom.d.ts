@@ -1,10 +1,10 @@
 // 全局定义recordItem类型
-type recordItem = {
+type RecordItem = {
   selectedTag: string[];
   note: string;
   type: string;
   amount: number;
-  createAt?: Date;
+  createAt?: string;
 };
 // 全局定义Tag类型
 type Tag = {

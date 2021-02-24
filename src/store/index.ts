@@ -10,7 +10,7 @@ const store = new Vuex.Store({
     // 标签数组变量
     tagList: [] as Tag[],
     // 记录收入支出数组
-    recordList: [] as recordItem[],
+    recordList: [] as RecordItem[],
   },
   mutations: {
     // 获取记录收入支出数组

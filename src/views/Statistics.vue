@@ -1,7 +1,23 @@
 <template>
   <Layout>
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
-    <Tabs :dataSource="intervalList" :type.sync="selectedInterval" />
+    <Tabs
+      :dataSource="intervalList"
+      :type.sync="selectedInterval"
+      classPrefix="interval"
+    />
+    <div>
+      <ol>
+        <li v-for="(group, index) in result" :key="index">
+          <h3>{{ group.title }}</h3>
+          <ol>
+            <li v-for="(item, i) in group.items" :key="i">
+              {{ item.amount }} {{ item.createAt }}
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </div>
   </Layout>
 </template>
 <script lang="ts">
@@ -13,6 +29,9 @@ import { Component } from "vue-property-decorator";
   components: { Tabs },
 })
 export default class Statistics extends Vue {
+  beforeCreate() {
+    this.$store.commit("getRecordList");
+  }
   selectedType = "-";
   typeList = [
     { text: "支出", value: "-" },
@@ -24,10 +43,27 @@ export default class Statistics extends Vue {
     { text: "按月", value: "month" },
   ];
   selectedInterval = "day";
+  // 获取记账信息
+  get recordList() {
+    return this.$store.state.recordList;
+  }
+  // 将记账信息按日期分组处理
+  get result() {
+    const { recordList } = this;
+    const hashTable: {
+      [key: string]: { title: string; items: RecordItem[] };
+    } = {};
+    for (let i = 0; i < recordList.length; i++) {
+      const [date] = recordList[i].createAt.split("T");
+      hashTable[date] = hashTable[date] || { title: date, items: [] };
+      hashTable[date].items.push(recordList[i]);
+    }
+    return hashTable;
+  }
 }
 </script>
 <style lang="scss" scoped>
-::v-deep .type-item {
+::v-deep .type-tabs-item {
   background-color: #fff;
   &.selected {
     background-color: #c4c4c4;
@@ -35,5 +71,8 @@ export default class Statistics extends Vue {
       display: none;
     }
   }
+}
+::v-deep .interval-tabs-item {
+  height: 48px;
 }
 </style>

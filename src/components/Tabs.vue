@@ -3,8 +3,9 @@
     <li
       v-for="item in dataSource"
       :key="item.value"
+      class="tabs-item"
       :class="{
-        [classPrefix + '-item']: classPrefix,
+        [classPrefix + '-tabs-item ']: classPrefix,
         selected: item.value === type,
       }"
       @click="selectedChange(item)"
@@ -23,8 +24,11 @@ type DataSourceItem = {
 };
 @Component
 export default class Types extends Vue {
+  // 数据源
   @Prop({ required: true, type: Array }) dataSource!: DataSourceItem[];
+  // 当前选中的项目
   @Prop() readonly type: string | undefined;
+  // 外部修改选中项的样式
   @Prop(String) classPrefix?: string;
   selectedChange(item: DataSourceItem) {
     this.$emit("update:type", item.value);
@@ -34,15 +38,17 @@ export default class Types extends Vue {
 <style lang="scss" scoped>
 .tabs {
   display: flex;
-  height: 64px;
-  line-height: 64px;
   background-color: #c4c4c4;
   font-size: 24px;
   color: #000;
   text-align: center;
-  li {
+  &-item {
+    display: flex;
     position: relative;
     flex-grow: 1;
+    height: 64px;
+    justify-content: center;
+    align-items: center;
   }
   .selected::after {
     content: "";
