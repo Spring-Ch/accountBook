@@ -6,18 +6,18 @@
       :type.sync="selectedInterval"
       classPrefix="interval"
     />
-    <div>
-      <ol>
-        <li v-for="(group, index) in result" :key="index">
-          <h3>{{ group.title }}</h3>
-          <ol>
-            <li v-for="(item, i) in group.items" :key="i">
-              {{ item.amount }} {{ item.createAt }}
-            </li>
-          </ol>
-        </li>
-      </ol>
-    </div>
+    <ol>
+      <li v-for="(group, index) in result" :key="index">
+        <h3 class="title">{{ group.title }} <span>总计</span></h3>
+        <ol>
+          <li v-for="(item, i) in group.items" :key="i" class="record">
+            <span>{{ item.selectedTag[0].name }}</span>
+            <span class="note">{{ item.note }}</span>
+            <span>¥ {{ item.amount }}</span>
+          </li>
+        </ol>
+      </li>
+    </ol>
   </Layout>
 </template>
 <script lang="ts">
@@ -74,5 +74,26 @@ export default class Statistics extends Vue {
 }
 ::v-deep .interval-tabs-item {
   height: 48px;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  font-size: 17px;
+  padding: 0 16px;
+}
+.record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  background-color: #fff;
+}
+.note {
+  margin-left: 16px;
+  margin-right: auto;
+  color: #999;
 }
 </style>
