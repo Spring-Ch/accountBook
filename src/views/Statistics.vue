@@ -24,6 +24,8 @@
 import Vue from "vue";
 import Tabs from "@/components/Tabs.vue";
 import { Component } from "vue-property-decorator";
+import dayjs from "dayjs";
+import clone from "@/lib/clone";
 
 @Component({
   components: { Tabs },
@@ -53,10 +55,18 @@ export default class Statistics extends Vue {
     const hashTable: {
       [key: string]: { title: string; items: RecordItem[] };
     } = {};
-    for (let i = 0; i < recordList.length; i++) {
-      const [date] = recordList[i].createAt.split("T");
-      hashTable[date] = hashTable[date] || { title: date, items: [] };
-      hashTable[date].items.push(recordList[i]);
+    const newList = clone(recordList).sort(
+      (a: { createAt: string }, b: { createAt: string }) =>
+        dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf()
+    );
+
+    for (let i = 0; i < newList.length; i++) {
+      const [myDate] = newList[i].createAt.split("T");
+      hashTable[myDate] = hashTable[myDate] || {
+        title: myDate,
+        items: [],
+      };
+      hashTable[myDate].items.push(newList[i]);
     }
     return hashTable;
   }
