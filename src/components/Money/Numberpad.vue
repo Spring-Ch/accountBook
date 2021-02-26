@@ -26,7 +26,7 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class NumberPad extends Vue {
-  @Prop() readonly amount!: number;
+  @Prop(Number) readonly amount!: number;
   // 输出的默认值是0
   output = "0";
   // 控制数字按键进行输入
