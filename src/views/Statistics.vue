@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
-    <ol>
+    <ol v-if="Object.keys(result).length > 0">
       <li v-for="(group, index) in result" :key="index">
         <h3 class="title">
           {{ group.title }} <span>总计: ¥{{ group.total }}</span>
@@ -14,6 +14,9 @@
           </li>
         </ol>
       </li>
+    </ol>
+    <ol v-else>
+      <div class="amountAlert">当前还未有记账信息</div>
     </ol>
   </Layout>
 </template>
@@ -53,6 +56,10 @@ export default class Statistics extends Vue {
         (a: { createAt: string }, b: { createAt: string }) =>
           dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf()
       );
+    // 防止newList为空数组，导致后面程序无法执行
+    if (newList.length === 0) {
+      return [];
+    }
     for (let i = 0; i < newList.length; i++) {
       const [myDate] = newList[i].createAt.split("T");
       result[myDate] = result[myDate] || {
@@ -61,6 +68,7 @@ export default class Statistics extends Vue {
       };
       result[myDate].items.push(newList[i]);
     }
+    // eslint-disable-next-line prefer-const
     for (let k in result) {
       result[k].total = result[k].items.reduce(
         (sum, item) => sum + item.amount,
@@ -105,5 +113,10 @@ export default class Statistics extends Vue {
   margin-left: 16px;
   margin-right: auto;
   color: #999;
+}
+.amountAlert {
+  line-height: 60px;
+  text-align: center;
+  color: #c4c4c4;
 }
 </style>

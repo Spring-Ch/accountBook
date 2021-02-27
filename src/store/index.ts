@@ -41,7 +41,7 @@ const store = new Vuex.Store({
     createTag(state) {
       const newTagName = window.prompt("请输入新的标签名") as string;
       const names: string[] = state.tagList.map((item: Tag) => item.name);
-      if (newTagName === "" || newTagName.trim() === "") {
+      if (newTagName.trim() === "" || newTagName === "") {
         window.alert("标签名不能为空");
       } else if (names.indexOf(newTagName) >= 0) {
         window.alert("标签名已存在，请输入新的标签名");
