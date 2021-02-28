@@ -11,6 +11,7 @@ const store = new Vuex.Store({
     tagList: [] as Tag[],
     // 记录收入支出数组
     recordList: [] as RecordItem[],
+    record: {} as RecordItem,
   },
   mutations: {
     // 获取记录收入支出数组
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
         "recordList",
         JSON.stringify(state.recordList)
       );
+      router.push("/statistics");
     },
     // 获取标签数组
     getTagList(state) {

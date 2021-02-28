@@ -16,27 +16,22 @@ import { Component } from "vue-property-decorator";
 
 @Component({
   components: { Tags, Notes, Tabs, Numberpad },
-  computed: {
-    recordList() {
-      return this.$store.state.recordList;
-    },
-  },
 })
 export default class Money extends Vue {
   created() {
     this.$store.commit("getTagList");
     this.$store.commit("getRecordList");
   }
-  record: RecordItem = {
+  typeList = [
+    { text: "支出", value: "-" },
+    { text: "收入", value: "+" },
+  ];
+  record = {
     selectedTag: [],
     note: "",
     type: "-",
     amount: 0,
   };
-  typeList = [
-    { text: "支出", value: "-" },
-    { text: "收入", value: "+" },
-  ];
   onUpdateNote(note: string) {
     this.record.note = note;
   }
