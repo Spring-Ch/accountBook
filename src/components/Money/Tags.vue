@@ -1,47 +1,39 @@
 <template>
   <div class="tags">
     <ul class="current">
-      <li
-        v-for="(tag, i) in tagList"
-        :key="i"
-        @click="toggle(tag)"
-        :class="{ selected: selectedTag.indexOf(tag) >= 0 }"
-      >
-        {{ tag.name }}
+      <li v-for="(tag, i) in tagList" :key="i" @click="toggle(tag)">
+        <Icon :name="tag.iconName" :class="{ selected: selectedTag === tag }" />
+        <span class="label">{{ tag.name }}</span>
+      </li>
+      <li class="new" @click="createTag">
+        <Icon name="add" />
+        <span class="label">添加</span>
       </li>
     </ul>
-    <div class="new">
-      <button @click="createTag">新增标签</button>
-    </div>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
-@Component({
-  computed: {
-    tagList() {
-      return this.$store.state.tagList;
-    },
-  },
-})
+@Component({})
 export default class Tags extends Vue {
   // 当页面生成时，获取标签数组
   created() {
     this.$store.commit("getTagList");
   }
   //设置一个数组，用来放置被选中的标签
-  @Prop(Array) readonly selectedTag!: string[];
-  // 选中元素后，将其放到selectedTag数组中
-  toggle(tag: string) {
-    const index: number = this.selectedTag.indexOf(tag);
-    if (index >= 0) {
-      this.selectedTag.splice(index, 1);
-    } else {
-      this.selectedTag.push(tag);
-    }
-    this.$emit("update:selectedTag", this.selectedTag);
+  @Prop() readonly selectedTag!: Tag;
+  get record() {
+    return this.$store.state.record;
+  }
+  get tagList() {
+    return this.$store.state.tagList.filter(
+      (item: { type: string }) => item.type === this.record.type
+    );
+  }
+  toggle(tag: Tag) {
+    this.$emit("update:selectedTag", tag);
   }
   // 添加新标签
   createTag() {
@@ -51,40 +43,33 @@ export default class Tags extends Vue {
 </script>
 <style lang="scss" scoped>
 .tags {
-  display: flex;
-  flex-direction: column;
+  height: 220px;
+  overflow: auto;
   background: #fff;
   padding: 16px;
   flex-grow: 1;
   .current {
     display: flex;
-    flex-grow: 1;
+    padding-left: 10px;
     flex-wrap: wrap;
     li {
-      $h: 24px;
-      $bg: #b9b9b9;
-      height: $h;
-      line-height: $h;
-      border-radius: $h/2;
       color: #000;
-      background-color: $bg;
       padding: 0px 16px;
-      margin-right: 10px;
-      &.selected {
-        background-color: darken($bg, 50%);
+      margin: 5px 10px 5px 0;
+      .icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        &.selected {
+          background-color: #ffda47;
+        }
       }
     }
   }
-  .new {
-    padding-top: 16px;
-    font-size: 14px;
-    button {
-      background-color: transparent;
-      border: none;
-      color: #999;
-      border-bottom: 1px solid #000;
-      padding: 0 4px;
-    }
+  .label {
+    display: block;
+    font-size: 12px;
+    text-align: center;
   }
 }
 </style>

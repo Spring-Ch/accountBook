@@ -8,7 +8,7 @@
         </h3>
         <ol>
           <li v-for="(item, i) in group.items" :key="i" class="record">
-            <span>{{ item.selectedTag[0].name }}</span>
+            <span>{{ item.selectedTag.name }}</span>
             <span class="note">{{ item.note }}</span>
             <span>¥ {{ item.amount }}</span>
           </li>

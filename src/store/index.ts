@@ -11,7 +11,12 @@ const store = new Vuex.Store({
     tagList: [] as Tag[],
     // 记录收入支出数组
     recordList: [] as RecordItem[],
-    record: {} as RecordItem,
+    record: {
+      selectedTag: {},
+      note: "",
+      type: "-",
+      amount: 0,
+    },
   },
   mutations: {
     // 获取记录收入支出数组
@@ -34,6 +39,23 @@ const store = new Vuex.Store({
       state.tagList = JSON.parse(
         window.localStorage.getItem("tagList") || "[]"
       );
+      if (state.tagList.length === 0) {
+        (state.tagList = [
+          { id: "0", name: "餐饮", type: "-", iconName: "catering" },
+          { id: "1", name: "交通", type: "-", iconName: "traffic" },
+          { id: "2", name: "医疗", type: "-", iconName: "medical" },
+          { id: "3", name: "日用品", type: "-", iconName: "commodity" },
+          { id: "4", name: "娱乐", type: "-", iconName: "amusement" },
+          { id: "5", name: "数码", type: "-", iconName: "digital" },
+          { id: "6", name: "家居", type: "-", iconName: "home" },
+          { id: "7", name: "工资", type: "+", iconName: "salary" },
+          { id: "8", name: "奖金", type: "+", iconName: "bonus" },
+          { id: "9", name: "补贴", type: "+", iconName: "subsidy" },
+          { id: "10", name: "理财", type: "+", iconName: "invest" },
+          { id: "11", name: "兼职", type: "+", iconName: "part-time" },
+        ]),
+          store.commit("saveTagList");
+      }
     },
     // 将数据保存到localStorage中
     saveTagList(state) {
@@ -49,7 +71,13 @@ const store = new Vuex.Store({
         window.alert("标签名已存在，请输入新的标签名");
       } else {
         const tagID = createID();
-        state.tagList.push({ id: tagID, name: newTagName });
+        const iconN = state.record.type === "-" ? "output" : "income";
+        state.tagList.push({
+          id: tagID,
+          name: newTagName,
+          type: state.record.type,
+          iconName: iconN,
+        });
         store.commit("saveTagList");
       }
     },

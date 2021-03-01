@@ -32,6 +32,8 @@ export default class EditLabel extends Vue {
   newTag: Tag = {
     id: "",
     name: "",
+    iconName: "",
+    type: "",
   };
 
   created() {

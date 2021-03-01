@@ -1,8 +1,9 @@
 <template>
   <Layout class-prefix="layout">
-    <Tags :selectedTag.sync="record.selectedTag" />
-    <Notes @update:note="onUpdateNote" />
     <Tabs :type.sync="record.type" :dataSource="typeList" />
+    <Tags :selectedTag.sync="record.selectedTag" v-if="record.type === '-'" />
+    <Tags :selectedTag.sync="record.selectedTag" v-else />
+    <Notes @update:note="onUpdateNote" />
     <Numberpad :amount.sync="record.amount" @submit="editRecordList" />
   </Layout>
 </template>
@@ -19,19 +20,15 @@ import { Component } from "vue-property-decorator";
 })
 export default class Money extends Vue {
   created() {
-    this.$store.commit("getTagList");
     this.$store.commit("getRecordList");
+  }
+  get record() {
+    return this.$store.state.record;
   }
   typeList = [
     { text: "支出", value: "-" },
     { text: "收入", value: "+" },
   ];
-  record = {
-    selectedTag: [],
-    note: "",
-    type: "-",
-    amount: 0,
-  };
   onUpdateNote(note: string) {
     this.record.note = note;
   }

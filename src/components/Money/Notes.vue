@@ -21,14 +21,15 @@ export default class Note extends Vue {
 .notes {
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #fff;
   font-size: 14px;
+  border-top: 1px solid #f5f5f5;
   .name {
     padding: 0 16px;
   }
   input {
     background-color: transparent;
-    height: 64px;
+    height: 48px;
     border: none;
     color: #999;
     flex-grow: 1;

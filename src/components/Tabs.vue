@@ -1,18 +1,20 @@
 <template>
-  <ul class="tabs">
-    <li
-      v-for="item in dataSource"
-      :key="item.value"
-      class="tabs-item"
-      :class="{
-        [classPrefix + '-tabs-item ']: classPrefix,
-        selected: item.value === type,
-      }"
-      @click="selectedChange(item)"
-    >
-      {{ item.text }}
-    </li>
-  </ul>
+  <div class="tabsWrapper">
+    <ul class="tabs">
+      <li
+        v-for="item in dataSource"
+        :key="item.value"
+        class="tabs-item"
+        :class="{
+          [classPrefix + '-tabs-item ']: classPrefix,
+          selected: item.value === type,
+        }"
+        @click="selectedChange(item)"
+      >
+        {{ item.text }}
+      </li>
+    </ul>
+  </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
@@ -36,17 +38,22 @@ export default class Types extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+.tabsWrapper {
+  display: flex;
+  justify-content: center;
+  background-color: #ffda47;
+}
 .tabs {
   display: flex;
-  background-color: #c4c4c4;
-  font-size: 24px;
+  width: 200px;
+  font-size: 20px;
   color: #000;
   text-align: center;
   &-item {
     display: flex;
     position: relative;
     flex-grow: 1;
-    height: 64px;
+    padding: 24px 16px 8px 16px;
     justify-content: center;
     align-items: center;
   }
@@ -56,7 +63,7 @@ export default class Types extends Vue {
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 4px;
+    height: 1.5px;
     background-color: #333;
   }
 }

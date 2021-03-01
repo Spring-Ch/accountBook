@@ -1,6 +1,6 @@
 // 全局定义recordItem类型
 type RecordItem = {
-  selectedTag: string[];
+  selectedTag: Tag;
   note: string;
   type: string;
   amount: number;
@@ -10,4 +10,6 @@ type RecordItem = {
 type Tag = {
   id: string;
   name: string;
+  iconName: string;
+  type: string;
 };
