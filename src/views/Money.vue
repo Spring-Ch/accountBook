@@ -3,7 +3,7 @@
     <Tabs :type.sync="record.type" :dataSource="typeList" />
     <Tags :selectedTag.sync="record.selectedTag" v-if="record.type === '-'" />
     <Tags :selectedTag.sync="record.selectedTag" v-else />
-    <Notes @update:note="onUpdateNote" />
+    <Notes @update:note="onUpdateNote" @update:createAt="atChanged" />
     <Numberpad :amount.sync="record.amount" @submit="editRecordList" />
   </Layout>
 </template>
@@ -32,11 +32,14 @@ export default class Money extends Vue {
   onUpdateNote(note: string) {
     this.record.note = note;
   }
+  atChanged(createAt: string) {
+    this.record.createAt = createAt;
+  }
   editRecordList() {
     //将record进行深拷贝
     const newRecord = JSON.parse(JSON.stringify(this.record));
     // 为newRecord添加创造时间属性
-    newRecord.createAt = new Date().toISOString();
+    newRecord.createAt = newRecord.createAt || new Date().toISOString();
     this.$store.commit("editRecordList", newRecord);
   }
 }
