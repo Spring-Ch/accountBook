@@ -12,7 +12,7 @@ import { Component, Watch } from "vue-property-decorator";
 @Component
 export default class Note extends Vue {
   note = "";
-  createdAt = "";
+  createAt = "";
   @Watch("note")
   onNoteChanged(note: string) {
     this.$emit("update:note", note);
