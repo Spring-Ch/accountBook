@@ -10,7 +10,7 @@
         <Echarts :options="option1" />
       </li>
       <li>
-        <span>支出排行{{ x }}</span>
+        <span>支出排行</span>
         <Echarts :options="option2" />
       </li>
     </ol>
@@ -23,7 +23,7 @@
           <li v-for="(item, i) in group.items" :key="i" class="record">
             <span>{{ item.selectedTag.name }}</span>
             <span class="note">{{ item.note }}</span>
-            <span>¥ {{ item.amount }}</span>
+            <span>{{ item.selectedTag.type }}{{ item.amount }}</span>
           </li>
         </ol>
       </li>
@@ -96,10 +96,10 @@ export default class Statistics extends Vue {
     };
   }
   // 饼状图配置项
-  get x() {
+  get option2() {
     const { tagList, recordList } = this;
     const result: {
-      [key: string]: { title: string; items: RecordItem[]; total?: number };
+      [key: string]: { title: string; items: number[]; total?: number };
     } = {};
     const newList = clone(recordList).filter(
       (r: { type: string }) => r.type === this.selectedType
@@ -107,45 +107,51 @@ export default class Statistics extends Vue {
     if (newList.length === 0) {
       return {};
     }
-    console.log(newList);
+    for (let i = 0; i < tagList.length; i++) {
+      const tag = tagList[i].name;
+      for (const k in newList) {
+        if (newList[k].selectedTag.name === tag) {
+          result[tag] = result[tag] || {
+            title: tag,
+            items: [],
+          };
+          result[tag].items.push(newList[k].amount);
+        }
+      }
+    }
+    for (const k in result) {
+      result[k].total = result[k].items.reduce((sum, item) => sum + item, 0);
+    }
+    console.log(result);
+    const newResult: { value: number; name: string }[] = [];
+    for (const k in result) {
+      newResult.push({
+        value: result[k].total,
+        name: result[k].title,
+      });
+    }
 
-    return result;
-  }
-  option2 = {
-    title: {
-      text: "某站点用户访问来源",
-      subtext: "纯属虚构",
-      left: "center",
-    },
-    tooltip: {
-      trigger: "item",
-    },
-    legend: {
-      orient: "vertical",
-      left: "left",
-    },
-    series: [
-      {
-        name: "访问来源",
-        type: "pie",
-        radius: "50%",
-        data: [
-          { value: 1048, name: "搜索引擎" },
-          { value: 735, name: "直接访问" },
-          { value: 580, name: "邮件营销" },
-          { value: 484, name: "联盟广告" },
-          { value: 300, name: "视频广告" },
-        ],
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: "rgba(0, 0, 0, 0.5)",
+    return {
+      tooltip: {
+        trigger: "item",
+      },
+      series: [
+        {
+          name: "访问来源",
+          type: "pie",
+          radius: "50%",
+          data: newResult,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: "rgba(0, 0, 0, 0.5)",
+            },
           },
         },
-      },
-    ],
-  };
+      ],
+    };
+  }
   // 获取记账信息
   get recordList() {
     return this.$store.state.recordList;
