@@ -4,7 +4,7 @@
 <script lang="ts">
 import Vue from "vue";
 import * as echarts from "echarts";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 import { EChartsOption } from "echarts";
 
 @Component({})

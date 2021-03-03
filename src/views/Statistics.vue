@@ -10,7 +10,7 @@
         <Echarts :options="option1" />
       </li>
       <li>
-        <span>支出排行</span>
+        <span>支出排行{{ x }}</span>
         <Echarts :options="option2" />
       </li>
     </ol>
@@ -47,6 +47,7 @@ import Echarts from "@/components/Chart.vue";
 export default class Statistics extends Vue {
   beforeCreate() {
     this.$store.commit("getRecordList");
+    this.$store.commit("getTagList");
   }
   selectedType = "-";
   typeList = [
@@ -54,22 +55,62 @@ export default class Statistics extends Vue {
     { text: "收入", value: "+" },
   ];
   // 折线图配置项
-  option1 = {
-    xAxis: {
-      type: "category",
-      data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    },
-    yAxis: {
-      type: "value",
-    },
-    series: [
-      {
-        data: [150, 230, 224, 218, 135, 147, 260],
-        type: "line",
+  get option1() {
+    const nowTime = new Date();
+    const nowMonth = nowTime.getMonth() + 1;
+    const nowYear = nowTime.getFullYear();
+
+    // 获得当前月份的天数
+    const dayNumber = new Date(nowYear, nowMonth, 0).getDate();
+    // 获取result值的数组
+    const data = Object.values(this.result);
+    // 生成一个数组，用来放日期
+    const days = [];
+    for (let i = 0; i < dayNumber; i++) {
+      const date = dayjs(nowTime).date(1).add(i, "day").format("YYYY-MM-DD");
+      const amount = data.find((i) => i.title === date);
+      days.push({ date: date, value: amount ? amount.total : 0 });
+    }
+
+    const keys = days.map((i) => i.date);
+    const values = days.map((i) => i.value);
+    return {
+      xAxis: {
+        type: "category",
+        data: keys,
+        axisLabel: {
+          formatter: function (value: string) {
+            return value.substr(5);
+          },
+        },
       },
-    ],
-  };
+      yAxis: {
+        type: "value",
+      },
+      series: [
+        {
+          data: values,
+          type: "line",
+        },
+      ],
+    };
+  }
   // 饼状图配置项
+  get x() {
+    const { tagList, recordList } = this;
+    const result: {
+      [key: string]: { title: string; items: RecordItem[]; total?: number };
+    } = {};
+    const newList = clone(recordList).filter(
+      (r: { type: string }) => r.type === this.selectedType
+    );
+    if (newList.length === 0) {
+      return {};
+    }
+    console.log(newList);
+
+    return result;
+  }
   option2 = {
     title: {
       text: "某站点用户访问来源",
@@ -109,6 +150,10 @@ export default class Statistics extends Vue {
   get recordList() {
     return this.$store.state.recordList;
   }
+  //获取标签信息
+  get tagList() {
+    return this.$store.state.tagList;
+  }
   // 将记账信息按日期分组处理
   get result() {
     const { recordList } = this;
@@ -124,7 +169,7 @@ export default class Statistics extends Vue {
       );
     // 防止newList为空数组，导致后面程序无法执行
     if (newList.length === 0) {
-      return [];
+      return {};
     }
     for (let i = 0; i < newList.length; i++) {
       const [myDate] = newList[i].createAt.split("T");
