@@ -50,12 +50,16 @@ export default class Tags extends Vue {
   flex-grow: 1;
   .current {
     display: flex;
-    padding-left: 10px;
+    width: 100%;
     flex-wrap: wrap;
     li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       color: #000;
-      padding: 0px 16px;
-      margin: 5px 10px 5px 0;
+      width: 25%;
+      height: 25%;
+      margin: 5px 0;
       .icon {
         width: 40px;
         height: 40px;
@@ -70,6 +74,7 @@ export default class Tags extends Vue {
     display: block;
     font-size: 12px;
     text-align: center;
+    width: 100%;
   }
 }
 </style>
