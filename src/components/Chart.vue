@@ -10,10 +10,14 @@ import { EChartsOption } from "echarts";
 @Component({})
 export default class Echarts extends Vue {
   @Prop() options?: EChartsOption;
+  myChart!: any;
   mounted() {
-    const chartDom = this.$refs.chart as HTMLDivElement;
-    const myChart = echarts.init(chartDom);
-    this.options && myChart.setOption(this.options);
+    this.myChart = echarts.init(this.$refs.chart as HTMLDivElement);
+    this.options && this.myChart.setOption(this.options);
+  }
+  @Watch("options")
+  onOptionsChange(newValue: EChartsOption) {
+    this.myChart.setOption(newValue);
   }
 }
 </script>

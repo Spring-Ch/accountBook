@@ -1,19 +1,6 @@
 <template>
   <Layout>
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
-    <ol>
-      <li>
-        <span>总计</span>
-      </li>
-      <li>
-        <span>每日对比</span>
-        <Echarts :options="option1" />
-      </li>
-      <li>
-        <span>支出排行</span>
-        <Echarts :options="option2" />
-      </li>
-    </ol>
     <ol v-if="Object.keys(result).length > 0">
       <li v-for="(group, index) in result" :key="index">
         <h3 class="title">
