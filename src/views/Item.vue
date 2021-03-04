@@ -16,7 +16,10 @@
       </li>
     </ol>
     <ol v-else>
-      <div class="amountAlert">当前还未有记账信息</div>
+      <div class="amountAlert">
+        <Icon name="record" />
+        <div>当前还未有记账信息</div>
+      </div>
     </ol>
   </Layout>
 </template>
@@ -34,111 +37,12 @@ import Echarts from "@/components/Chart.vue";
 export default class Statistics extends Vue {
   beforeCreate() {
     this.$store.commit("getRecordList");
-    this.$store.commit("getTagList");
   }
   selectedType = "-";
   typeList = [
     { text: "支出", value: "-" },
     { text: "收入", value: "+" },
   ];
-  // 折线图配置项
-  get option1() {
-    const nowTime = new Date();
-    const nowMonth = nowTime.getMonth() + 1;
-    const nowYear = nowTime.getFullYear();
-
-    // 获得当前月份的天数
-    const dayNumber = new Date(nowYear, nowMonth, 0).getDate();
-    // 获取result值的数组
-    const data = Object.values(this.result);
-    // 生成一个数组，用来放日期
-    const days = [];
-    for (let i = 0; i < dayNumber; i++) {
-      const date = dayjs(nowTime).date(1).add(i, "day").format("YYYY-MM-DD");
-      const amount = data.find((i) => i.title === date);
-      days.push({ date: date, value: amount ? amount.total : 0 });
-    }
-
-    const keys = days.map((i) => i.date);
-    const values = days.map((i) => i.value);
-    return {
-      xAxis: {
-        type: "category",
-        data: keys,
-        axisLabel: {
-          formatter: function (value: string) {
-            return value.substr(5);
-          },
-        },
-      },
-      yAxis: {
-        type: "value",
-      },
-      series: [
-        {
-          data: values,
-          type: "line",
-        },
-      ],
-    };
-  }
-  // 饼状图配置项
-  get option2() {
-    const { tagList, recordList } = this;
-    const result: {
-      [key: string]: { title: string; items: number[]; total?: number };
-    } = {};
-    const newList = clone(recordList).filter(
-      (r: { type: string }) => r.type === this.selectedType
-    );
-    if (newList.length === 0) {
-      return {};
-    }
-    for (let i = 0; i < tagList.length; i++) {
-      const tag = tagList[i].name;
-      for (const k in newList) {
-        if (newList[k].selectedTag.name === tag) {
-          result[tag] = result[tag] || {
-            title: tag,
-            items: [],
-          };
-          result[tag].items.push(newList[k].amount);
-        }
-      }
-    }
-    for (const k in result) {
-      result[k].total = result[k].items.reduce((sum, item) => sum + item, 0);
-    }
-    const newResult: { value: number; name: string }[] = [];
-    for (const k in result) {
-      newResult.push({
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        value: result[k].total!,
-        name: result[k].title,
-      });
-    }
-
-    return {
-      tooltip: {
-        trigger: "item",
-      },
-      series: [
-        {
-          name: "访问来源",
-          type: "pie",
-          radius: "50%",
-          data: newResult,
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: "rgba(0, 0, 0, 0.5)",
-            },
-          },
-        },
-      ],
-    };
-  }
   // 获取记账信息
   get recordList() {
     return this.$store.state.recordList;
@@ -210,8 +114,12 @@ export default class Statistics extends Vue {
   color: #999;
 }
 .amountAlert {
-  line-height: 60px;
+  margin-top: 60px;
   text-align: center;
   color: #c4c4c4;
+  .icon {
+    width: 40px;
+    height: 40px;
+  }
 }
 </style>

@@ -47,6 +47,7 @@ export default class Types extends Vue {
   display: flex;
   width: 200px;
   font-size: 20px;
+  font-weight: 500;
   color: #000;
   text-align: center;
   &-item {

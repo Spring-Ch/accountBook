@@ -4,7 +4,7 @@
       ><Icon name="money" />明细
     </router-link>
     <router-link to="/money" class="item" active-class="selected"
-      ><Icon name="money" />记账
+      ><Icon name="manage" />记账
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected"
       ><Icon name="static" />统计

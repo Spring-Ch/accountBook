@@ -1,35 +1,23 @@
 <template>
   <Layout>
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
-    <ol>
-      <li>
-        <span>总计</span>
+    <ol v-if="Object.keys(result).length > 0" class="Statistics">
+      <li class="total">
+        <span>总计: </span>
+        <span>{{ selectedType }}{{ amountTotal }}</span>
       </li>
-      <li>
-        <span>每日对比</span>
+      <li class="daily">
         <Echarts :options="option1" />
       </li>
-      <li>
-        <span>支出排行</span>
+      <li class="output">
         <Echarts :options="option2" />
       </li>
     </ol>
-    <ol v-if="Object.keys(result).length > 0">
-      <li v-for="(group, index) in result" :key="index">
-        <h3 class="title">
-          {{ group.title }} <span>总计: ¥{{ group.total }}</span>
-        </h3>
-        <ol>
-          <li v-for="(item, i) in group.items" :key="i" class="record">
-            <span>{{ item.selectedTag.name }}</span>
-            <span class="note">{{ item.note }}</span>
-            <span>{{ item.selectedTag.type }}{{ item.amount }}</span>
-          </li>
-        </ol>
-      </li>
-    </ol>
     <ol v-else>
-      <div class="amountAlert">当前还未有记账信息</div>
+      <div class="amountAlert">
+        <Icon name="record" />
+        <div>当前还未有记账信息</div>
+      </div>
     </ol>
   </Layout>
 </template>
@@ -75,6 +63,14 @@ export default class Statistics extends Vue {
     const keys = days.map((i) => i.date);
     const values = days.map((i) => i.value);
     return {
+      title: { text: "每日对比", left: "center" },
+      grid: { top: "20%", height: "60%" },
+      tooltip: {
+        show: true,
+        trigger: "axis",
+        triggerOn: "mousemove|click",
+        formatter: "{c}",
+      },
       xAxis: {
         type: "category",
         data: keys,
@@ -132,12 +128,15 @@ export default class Statistics extends Vue {
     }
 
     return {
+      title: { text: "各项占比", left: "center" },
+      grid: { top: "20%", height: "60%" },
       tooltip: {
         trigger: "item",
+        triggerOn: "mousemove",
       },
       series: [
         {
-          name: "访问来源",
+          label: { formatter: "{b}: {d}%" },
           type: "pie",
           radius: "50%",
           data: newResult,
@@ -192,7 +191,17 @@ export default class Statistics extends Vue {
         0
       );
     }
+
     return result;
+  }
+  // 获取当月支出或收入总额
+  get amountTotal() {
+    let amountTotal = 0;
+    const newResult = Object.values(this.result);
+    if (newResult.length > 0) {
+      amountTotal = newResult.reduce((sum, i) => sum + i.total, 0);
+    }
+    return amountTotal;
   }
 }
 </script>
@@ -223,8 +232,25 @@ export default class Statistics extends Vue {
   color: #999;
 }
 .amountAlert {
-  line-height: 60px;
+  margin-top: 60px;
   text-align: center;
   color: #c4c4c4;
+  .icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+.Statistics {
+  li {
+    padding-top: 10px;
+  }
+  .total {
+    display: flex;
+    justify-content: center;
+  }
+  .daily,
+  .output {
+    border-top: 1px solid #999;
+  }
 }
 </style>

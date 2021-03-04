@@ -1,5 +1,5 @@
 <template>
-  <div id="main" style="height: 400px" ref="chart"></div>
+  <div id="main" style="height: 245px" ref="chart"></div>
 </template>
 <script lang="ts">
 import Vue from "vue";
@@ -22,4 +22,5 @@ export default class Echarts extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
