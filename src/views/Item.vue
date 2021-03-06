@@ -18,8 +18,8 @@
     </ol>
     <ol v-else>
       <div class="amountAlert">
-        <Icon name="record" />
-        <div>当前还未有记账信息</div>
+        <div><Icon name="record" /></div>
+        <router-link to="/money">赶紧去记一笔吧</router-link>
       </div>
     </ol>
   </Layout>
@@ -118,5 +118,14 @@ export default class Statistics extends Vue {
   margin-left: 16px;
   margin-right: auto;
   color: #999;
+}
+.amountAlert {
+  margin-top: 60px;
+  text-align: center;
+  color: #c4c4c4;
+  .icon {
+    width: 40px;
+    height: 40px;
+  }
 }
 </style>

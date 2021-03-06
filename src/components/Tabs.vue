@@ -34,6 +34,7 @@ export default class Types extends Vue {
   @Prop(String) classPrefix?: string;
   selectedChange(item: DataSourceItem) {
     this.$emit("update:type", item.value);
+    this.$emit("recordChange");
   }
 }
 </script>

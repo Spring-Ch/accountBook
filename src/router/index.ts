@@ -19,7 +19,7 @@ VueRouter.prototype.push = function push(
 };
 
 const routes: Array<RouteConfig> = [
-  { path: "/", redirect: "/money" },
+  { path: "/", redirect: "/item" },
   { path: "/labels", component: Labels },
   { path: "/money", component: Money },
   { path: "/statistics", component: Statistics },

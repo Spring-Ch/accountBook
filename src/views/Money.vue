@@ -1,6 +1,10 @@
 <template>
-  <Layout class-prefix="layout" :style="{ height: h + 'px' }">
-    <Tabs :type.sync="record.type" :dataSource="typeList" />
+  <Layout class-prefix="layout">
+    <Tabs
+      :type.sync="record.type"
+      :dataSource="typeList"
+      @recordChange="recordChange()"
+    />
     <Tags :selectedTag.sync="record.selectedTag" v-if="record.type === '-'" />
     <Tags :selectedTag.sync="record.selectedTag" v-else />
     <Notes @update:note="onUpdateNote" @update:createAt="atChanged" />
@@ -22,9 +26,6 @@ export default class Money extends Vue {
   created() {
     this.$store.commit("getRecordList");
   }
-  get h() {
-    return document.body.clientHeight;
-  }
   get record() {
     return this.$store.state.record;
   }
@@ -44,6 +45,9 @@ export default class Money extends Vue {
     // 为newRecord添加创造时间属性
     newRecord.createAt = newRecord.createAt || new Date().toISOString();
     this.$store.commit("editRecordList", newRecord);
+  }
+  recordChange() {
+    this.$store.commit("getRecord");
   }
 }
 </script>
