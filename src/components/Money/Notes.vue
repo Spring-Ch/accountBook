@@ -8,11 +8,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
+import dayjs from "dayjs";
 
 @Component
 export default class Note extends Vue {
   note = "";
-  createAt = "";
+  createAt = dayjs(new Date()).format("YYYY-MM-DD");
   @Watch("note")
   onNoteChanged(note: string) {
     this.$emit("update:note", note);

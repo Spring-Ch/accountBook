@@ -12,7 +12,12 @@ const store = new Vuex.Store({
     // 记录收入支出数组
     recordList: [] as RecordItem[],
     record: {
-      selectedTag: {},
+      selectedTag: {
+        id: "0",
+        name: "餐饮",
+        type: "-",
+        iconName: "catering",
+      },
       note: "",
       type: "-",
       amount: 0,
@@ -106,8 +111,8 @@ const store = new Vuex.Store({
         window.alert("标签删除失败");
       }
     },
-    // 点击Tabs后，初始化record
-    getRecord(state) {
+    // 点击Tabs后，切换record
+    toggleRecord(state) {
       if (state.record.type === "-") {
         state.record = {
           selectedTag: {
@@ -122,7 +127,12 @@ const store = new Vuex.Store({
         };
       } else if (state.record.type === "+") {
         state.record = {
-          selectedTag: { id: "7", name: "工资", type: "+", iconName: "salary" },
+          selectedTag: {
+            id: "7",
+            name: "工资",
+            type: "+",
+            iconName: "salary",
+          },
           note: "",
           type: "+",
           amount: 0,
@@ -130,6 +140,19 @@ const store = new Vuex.Store({
       } else {
         window.alert("出错了！");
       }
+    },
+    initialRecord(state) {
+      state.record = {
+        selectedTag: {
+          id: "0",
+          name: "餐饮",
+          type: "-",
+          iconName: "catering",
+        },
+        note: "",
+        type: "-",
+        amount: 0,
+      };
     },
   },
 });

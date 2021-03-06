@@ -1,6 +1,7 @@
 <template>
   <Layout>
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
+    <div class="time"></div>
     <ol v-if="Object.keys(result).length > 0">
       <li v-for="(group, index) in result" :key="index">
         <h3 class="title">
@@ -44,6 +45,7 @@ export default class Statistics extends Vue {
     { text: "支出", value: "-" },
     { text: "收入", value: "+" },
   ];
+  nowMonth = dayjs(new Date()).format("YYYY-MM");
   // 获取记账信息
   get recordList() {
     return this.$store.state.recordList;
@@ -127,5 +129,9 @@ export default class Statistics extends Vue {
     width: 40px;
     height: 40px;
   }
+}
+.time {
+  margin: 10px 0 5px 0;
+  text-align: center;
 }
 </style>

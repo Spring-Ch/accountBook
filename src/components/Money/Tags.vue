@@ -24,14 +24,13 @@ export default class Tags extends Vue {
   // 当页面生成时，获取标签数组
   created() {
     this.$store.commit("getTagList");
-    this.$store.commit("getRecord");
+    this.$store.commit("initialRecord");
   }
   //设置一个数组，用来放置被选中的标签
   @Prop() readonly selectedTag!: Tag;
   get record() {
     return this.$store.state.record;
   }
-
   get tagList() {
     return this.$store.state.tagList.filter(
       (item: { type: string }) => item.type === this.record.type

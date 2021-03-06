@@ -47,7 +47,7 @@ export default class Money extends Vue {
     this.$store.commit("editRecordList", newRecord);
   }
   recordChange() {
-    this.$store.commit("getRecord");
+    this.$store.commit("toggleRecord");
   }
 }
 </script>
