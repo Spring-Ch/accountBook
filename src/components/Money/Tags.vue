@@ -1,8 +1,8 @@
 <template>
   <div class="tags">
     <ul class="current">
-      <li v-for="(tag, i) in tagList" :key="i" @click="toggle(tag)">
-        <Icon :name="tag.iconName" :class="{ selected: selectedTag === tag }" />
+      <li v-for="(tag, i) in tagList" :key="i" @click="toggle(tag, i)">
+        <Icon :name="tag.iconName" :class="{ selected: tagFlag === i }" />
         <span class="label">{{ tag.name }}</span>
       </li>
       <li class="new" @click="createTag">
@@ -24,6 +24,7 @@ export default class Tags extends Vue {
   }
   //设置一个数组，用来放置被选中的标签
   @Prop() readonly selectedTag!: Tag;
+  tagFlag = 0;
   get record() {
     return this.$store.state.record;
   }
@@ -32,7 +33,9 @@ export default class Tags extends Vue {
       (item: { type: string }) => item.type === this.record.type
     );
   }
-  toggle(tag: Tag) {
+  // 默认选中第一个标签，通过点击切换选中的样式
+  toggle(tag: Tag, i: number) {
+    this.tagFlag = i;
     this.$emit("update:selectedTag", tag);
   }
   // 添加新标签

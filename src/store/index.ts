@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     // 记录收入支出数组
     recordList: [] as RecordItem[],
     record: {
-      selectedTag: {},
+      selectedTag: { id: "0", name: "餐饮", type: "-", iconName: "catering" },
       note: "",
       type: "-",
       amount: 0,
@@ -32,7 +32,7 @@ const store = new Vuex.Store({
         "recordList",
         JSON.stringify(state.recordList)
       );
-      router.push("/statistics");
+      router.push("/item");
     },
     // 获取标签数组
     getTagList(state) {

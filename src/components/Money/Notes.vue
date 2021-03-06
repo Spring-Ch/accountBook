@@ -2,7 +2,7 @@
   <label class="notes">
     <span class="name">备注</span>
     <input type="text" placeholder="在这里添加备注" v-model="note" />
-    <input type="date" v-model="createAt" />
+    <input type="date" v-model="createAt" class="date" />
   </label>
 </template>
 <script lang="ts">
@@ -31,7 +31,7 @@ export default class Note extends Vue {
   font-size: 14px;
   border-top: 1px solid #f5f5f5;
   .name {
-    padding: 0 16px;
+    padding: 0 10px;
   }
   input {
     background-color: transparent;
@@ -39,6 +39,9 @@ export default class Note extends Vue {
     border: none;
     color: #999;
     flex-grow: 1;
+  }
+  .date {
+    margin-right: 10px;
   }
 }
 </style>

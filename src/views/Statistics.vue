@@ -4,7 +4,7 @@
     <ol v-if="Object.keys(result).length > 0" class="Statistics">
       <li class="total">
         <span>总计: </span>
-        <span>{{ selectedType }}{{ amountTotal }}</span>
+        <span class="amount">{{ selectedType }}{{ amountTotal }}</span>
       </li>
       <li class="daily">
         <Echarts :options="option1" />
@@ -247,6 +247,9 @@ export default class Statistics extends Vue {
   .total {
     display: flex;
     justify-content: center;
+    .amount {
+      font-weight: bolder;
+    }
   }
   .daily,
   .output {

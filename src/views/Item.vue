@@ -8,6 +8,7 @@
         </h3>
         <ol>
           <li v-for="(item, i) in group.items" :key="i" class="record">
+            <Icon :name="item.selectedTag.iconName" />
             <span>{{ item.selectedTag.name }}</span>
             <span class="note">{{ item.note }}</span>
             <span>{{ item.selectedTag.type }}{{ item.amount }}</span>
@@ -107,19 +108,15 @@ export default class Statistics extends Vue {
   min-height: 40px;
   padding: 0 16px;
   background-color: #fff;
+  .icon {
+    margin-right: 5px;
+    width: 25px;
+    height: 25px;
+  }
 }
 .note {
   margin-left: 16px;
   margin-right: auto;
   color: #999;
-}
-.amountAlert {
-  margin-top: 60px;
-  text-align: center;
-  color: #c4c4c4;
-  .icon {
-    width: 40px;
-    height: 40px;
-  }
 }
 </style>
