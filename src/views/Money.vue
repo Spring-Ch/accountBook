@@ -1,5 +1,5 @@
 <template>
-  <Layout class-prefix="layout">
+  <Layout class-prefix="layout" :style="{ height: h + 'px' }">
     <Tabs
       :type.sync="record.type"
       :dataSource="typeList"
@@ -25,6 +25,9 @@ import { Component } from "vue-property-decorator";
 export default class Money extends Vue {
   created() {
     this.$store.commit("getRecordList");
+  }
+  get h() {
+    return document.documentElement.clientHeight;
   }
   get record() {
     return this.$store.state.record;

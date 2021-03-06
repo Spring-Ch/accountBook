@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout :style="{ height: h + 'px' }">
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
     <div class="time"></div>
     <ol v-if="Object.keys(result).length > 0">
@@ -46,6 +46,9 @@ export default class Statistics extends Vue {
     { text: "收入", value: "+" },
   ];
   nowMonth = dayjs(new Date()).format("YYYY-MM");
+  get h() {
+    return document.documentElement.clientHeight;
+  }
   // 获取记账信息
   get recordList() {
     return this.$store.state.recordList;

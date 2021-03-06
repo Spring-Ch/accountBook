@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout :style="{ height: h + 'px' }">
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
     <ol v-if="Object.keys(result).length > 0" class="Statistics">
       <li class="total">
@@ -42,6 +42,9 @@ export default class Statistics extends Vue {
     { text: "支出", value: "-" },
     { text: "收入", value: "+" },
   ];
+  get h() {
+    return document.documentElement.clientHeight;
+  }
   // 折线图配置项
   get option1() {
     const nowTime = new Date();
