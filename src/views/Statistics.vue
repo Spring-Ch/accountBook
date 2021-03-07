@@ -3,8 +3,11 @@
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
     <ol v-if="Object.keys(result).length > 0" class="Statistics">
       <li class="total">
-        <span>总计: </span>
-        <span class="amount">{{ selectedType }}{{ amountTotal }}</span>
+        <div>
+          <span>总计: </span>
+          <span class="amount">{{ selectedType }}{{ amountTotal }}</span>
+        </div>
+        <div class="date"><input type="month" v-model="nowMonth" /></div>
       </li>
       <li class="daily">
         <Echarts :options="option1" />
@@ -15,8 +18,9 @@
     </ol>
     <ol v-else>
       <div class="amountAlert">
+        <div class="date"><input type="month" v-model="nowMonth" /></div>
         <Icon name="record" />
-        <div>当前还未有记账信息</div>
+        <div>此月还未有记账信息</div>
       </div>
     </ol>
   </Layout>
@@ -42,23 +46,26 @@ export default class Statistics extends Vue {
     { text: "支出", value: "-" },
     { text: "收入", value: "+" },
   ];
+  nowMonth = dayjs(new Date()).format("YYYY-MM");
+
   get h() {
     return document.documentElement.clientHeight;
   }
   // 折线图配置项
   get option1() {
-    const nowTime = new Date();
-    const nowMonth = nowTime.getMonth() + 1;
-    const nowYear = nowTime.getFullYear();
-
+    const { nowMonth } = this;
     // 获得当前月份的天数
-    const dayNumber = new Date(nowYear, nowMonth, 0).getDate();
+    const dayNumber = new Date(
+      parseInt(nowMonth.substring(0, 4)),
+      parseInt(nowMonth.substring(5, 7)),
+      0
+    ).getDate();
     // 获取result值的数组
     const data = Object.values(this.result);
     // 生成一个数组，用来放日期
     const days = [];
     for (let i = 0; i < dayNumber; i++) {
-      const date = dayjs(nowTime).date(1).add(i, "day").format("YYYY-MM-DD");
+      const date = dayjs(nowMonth).date(1).add(i, "day").format("YYYY-MM-DD");
       const amount = data.find((i) => i.title === date);
       days.push({ date: date, value: amount ? amount.total : 0 });
     }
@@ -100,12 +107,16 @@ export default class Statistics extends Vue {
     const result: {
       [key: string]: { title: string; items: number[]; total?: number };
     } = {};
-    const newList = clone(recordList).filter(
+    // 按支出和收入将数组过滤
+    let newList = clone(recordList).filter(
       (r: { type: string }) => r.type === this.selectedType
     );
-    if (newList.length === 0) {
-      return {};
-    }
+    // 按月份将数组过滤
+    newList = newList.filter(
+      (item: { createAt: string }) =>
+        item.createAt.substring(0, 7) === this.nowMonth
+    );
+
     for (let i = 0; i < tagList.length; i++) {
       const tag = tagList[i].name;
       for (const k in newList) {
@@ -194,8 +205,13 @@ export default class Statistics extends Vue {
         0
       );
     }
-
-    return result;
+    const newResult = [];
+    for (const k in result) {
+      if (result[k].title.substring(0, 7) === this.nowMonth) {
+        newResult.push(result[k]);
+      }
+    }
+    return newResult;
   }
   // 获取当月支出或收入总额
   get amountTotal() {
@@ -242,6 +258,9 @@ export default class Statistics extends Vue {
     width: 40px;
     height: 40px;
   }
+  .date {
+    padding-bottom: 15px;
+  }
 }
 .Statistics {
   li {
@@ -249,7 +268,9 @@ export default class Statistics extends Vue {
   }
   .total {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
     .amount {
       font-weight: bolder;
     }

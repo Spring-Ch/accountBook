@@ -1,8 +1,8 @@
 <template>
   <Layout :style="{ height: h + 'px' }">
     <Tabs :dataSource="typeList" :type.sync="selectedType" classPrefix="type" />
-    <div class="time"></div>
-    <ol v-if="Object.keys(result).length > 0">
+    <div class="time"><input type="month" v-model="nowMonth" /></div>
+    <ol v-if="result.length > 0">
       <li v-for="(group, index) in result" :key="index">
         <h3 class="title">
           {{ group.title }} <span>总计: ¥{{ group.total }}</span>
@@ -89,7 +89,13 @@ export default class Statistics extends Vue {
         0
       );
     }
-    return result;
+    const newResult = [];
+    for (const k in result) {
+      if (result[k].title.substring(0, 7) === this.nowMonth) {
+        newResult.push(result[k]);
+      }
+    }
+    return newResult;
   }
 }
 </script>
