@@ -13,3 +13,4 @@ type Tag = {
   iconName: string;
   type: string;
 };
+type ResultItem = { title: string; items: RecordItem[]; total: number };

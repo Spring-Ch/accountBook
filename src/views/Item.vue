@@ -82,8 +82,7 @@ export default class Statistics extends Vue {
       };
       result[myDate].items.push(newList[i]);
     }
-    // eslint-disable-next-line prefer-const
-    for (let k in result) {
+    for (const k in result) {
       result[k].total = result[k].items.reduce(
         (sum, item) => sum + item.amount,
         0

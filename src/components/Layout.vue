@@ -14,7 +14,6 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .layout-wrapper {
-  position: relative;
   display: flex;
   flex-direction: column;
   height: 100vh;

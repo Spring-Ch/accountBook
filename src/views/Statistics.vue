@@ -62,12 +62,16 @@ export default class Statistics extends Vue {
     ).getDate();
     // 获取result值的数组
     const data = Object.values(this.result);
+
     // 生成一个数组，用来放日期
     const days = [];
     for (let i = 0; i < dayNumber; i++) {
       const date = dayjs(nowMonth).date(1).add(i, "day").format("YYYY-MM-DD");
-      const amount = data.find((i) => i.title === date);
-      days.push({ date: date, value: amount ? amount.total : 0 });
+      const amount = data.find((item) => (item as ResultItem).title === date);
+      days.push({
+        date: date,
+        value: amount ? (amount as ResultItem).total : 0,
+      });
     }
 
     const keys = days.map((i) => i.date);
@@ -215,10 +219,15 @@ export default class Statistics extends Vue {
   }
   // 获取当月支出或收入总额
   get amountTotal() {
-    let amountTotal = 0;
+    let amountTotal;
     const newResult = Object.values(this.result);
     if (newResult.length > 0) {
-      amountTotal = newResult.reduce((sum, i) => sum + i.total, 0);
+      amountTotal = newResult.reduce(
+        (sum, i) => (sum as number) + (i as ResultItem).total,
+        0
+      );
+    } else {
+      amountTotal = 0;
     }
     return amountTotal;
   }
