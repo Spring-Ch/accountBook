@@ -23,7 +23,7 @@ const routes: Array<RouteConfig> = [
   { path: "/statistics", component: Statistics },
   { path: "/item", component: Item },
   { path: "/item/editrecord/:id", component: EditRecord },
-  { path: "*", component: NotFound },
+  { path: "/*", component: NotFound },
 ];
 
 const router = new VueRouter({
