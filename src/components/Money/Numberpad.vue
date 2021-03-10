@@ -59,7 +59,7 @@ export default class NumberPad extends Vue {
   }
   //确定，提交功能
   ok() {
-    if (this.output === "0") {
+    if (this.output === "0" || this.output === "0.") {
       window.alert("请输入实际金额");
     } else {
       this.$emit("update:amount", parseFloat(this.output));
