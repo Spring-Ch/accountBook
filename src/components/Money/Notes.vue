@@ -34,6 +34,7 @@ export default class Note extends Vue {
   border-top: 1px solid #f5f5f5;
   .name {
     padding: 0 10px;
+    white-space: nowrap;
     display: block;
   }
   input {

@@ -1,5 +1,5 @@
 <template>
-  <div class="editRecordWrapper">
+  <div class="editRecordWrapper" :style="{ height: h + 'px' }">
     <div class="header">
       <div class="back">
         <router-link to="/item">
@@ -44,6 +44,9 @@ export default class EditRecord extends Vue {
       this.$router.push("/404");
     }
   }
+  get h() {
+    return document.documentElement.clientHeight;
+  }
   get recordList() {
     return this.$store.state.recordList;
   }
@@ -59,12 +62,10 @@ export default class EditRecord extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-body {
-  position: relative;
-}
 .editRecordWrapper {
   display: flex;
   flex-direction: column;
+  height: 100vh;
   .header {
     display: flex;
     background-color: #ffda47;
@@ -97,6 +98,7 @@ body {
   }
   .content {
     padding: 0 15px;
+    flex-grow: 1;
     .item {
       font-size: 16px;
       color: #999;
@@ -113,9 +115,6 @@ body {
   }
   .footer {
     display: flex;
-    position: absolute;
-    left: 0;
-    bottom: 0;
     width: 100%;
     border-top: 1px solid #ccc;
     padding: 10px 15px;
