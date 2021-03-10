@@ -8,7 +8,12 @@
           {{ group.title }} <span>总计: ¥{{ group.total }}</span>
         </h3>
         <ol>
-          <li v-for="(item, i) in group.items" :key="i" class="record">
+          <li
+            v-for="(item, i) in group.items"
+            :key="i"
+            class="record"
+            @click="editRecord(item.id)"
+          >
             <Icon :name="item.selectedTag.iconName" />
             <span>{{ item.selectedTag.name }}</span>
             <span class="note">{{ item.note }}</span>
@@ -45,6 +50,10 @@ export default class Statistics extends Vue {
     { text: "支出", value: "-" },
     { text: "收入", value: "+" },
   ];
+  // 进入编辑记账信息页面
+  editRecord(ID: string) {
+    this.$router.push(`/item/editrecord/${ID}`);
+  }
   nowMonth = dayjs(new Date()).format("YYYY-MM");
   get h() {
     return document.documentElement.clientHeight;

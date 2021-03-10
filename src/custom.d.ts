@@ -1,5 +1,6 @@
 // 全局定义recordItem类型
 type RecordItem = {
+  id?: string;
   selectedTag: Tag;
   note: string;
   type: string;

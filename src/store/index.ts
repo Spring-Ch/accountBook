@@ -39,6 +39,10 @@ const store = new Vuex.Store({
       );
       router.push("/item");
     },
+    //获取指定id的record
+    getRecordByID(state, ID) {
+      return state.recordList.filter((i) => i.id === ID);
+    },
     // 获取标签数组
     getTagList(state) {
       state.tagList = JSON.parse(
@@ -62,9 +66,23 @@ const store = new Vuex.Store({
           store.commit("saveTagList");
       }
     },
-    // 将数据保存到localStorage中
+    // 将标签数据保存到localStorage中
     saveTagList(state) {
       window.localStorage.setItem("tagList", JSON.stringify(state.tagList));
+    },
+    // 删除记账信息
+    deleteRecord(state, ID) {
+      const index = state.recordList.findIndex((i) => i.id === ID);
+      if (index >= 0) {
+        state.recordList.splice(index, 1);
+        window.localStorage.setItem(
+          "recordList",
+          JSON.stringify(state.recordList)
+        );
+        router.push("/item");
+      } else {
+        window.alert("信息删除失败");
+      }
     },
     // 新建标签
     createTag(state) {
@@ -89,7 +107,7 @@ const store = new Vuex.Store({
         store.commit("saveTagList");
       }
     },
-    // 修改标签名
+    // 修改标签名---待删除
     editTag(state, newTag) {
       const names = state.tagList.map((item) => item.name);
       if (newTag.name === "" || newTag.name.trim() === "") {
@@ -103,7 +121,7 @@ const store = new Vuex.Store({
         window.alert("标签修改成功");
       }
     },
-    // 删除标签名
+    // 删除标签名--待删除
     deleteTag(state, newTag) {
       const index = state.tagList.findIndex((item) => item.id === newTag.id);
       if (index >= 0) {
@@ -144,6 +162,7 @@ const store = new Vuex.Store({
         window.alert("出错了！");
       }
     },
+    // 初始化record
     initialRecord(state) {
       state.record = {
         selectedTag: {

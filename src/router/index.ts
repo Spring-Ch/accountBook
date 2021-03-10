@@ -4,6 +4,7 @@ import Money from "@/views/Money.vue";
 import Statistics from "@/views/Statistics.vue";
 import NotFound from "@/views/NotFound.vue";
 import Item from "@/views/Item.vue";
+import EditRecord from "@/views/EditRecord.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,7 @@ const routes: Array<RouteConfig> = [
   { path: "/money", component: Money },
   { path: "/statistics", component: Statistics },
   { path: "/item", component: Item },
+  { path: "/item/editrecord/:id", component: EditRecord },
   { path: "*", component: NotFound },
 ];
 

@@ -18,6 +18,7 @@ import Notes from "@/components/Money/Notes.vue";
 import Tabs from "@/components/Tabs.vue";
 import Numberpad from "@/components/Money/Numberpad.vue";
 import { Component } from "vue-property-decorator";
+import createRecordID from "@/lib/createRecordID.ts";
 
 @Component({
   components: { Tags, Notes, Tabs, Numberpad },
@@ -47,6 +48,7 @@ export default class Money extends Vue {
     const newRecord = JSON.parse(JSON.stringify(this.record));
     // 为newRecord添加创造时间属性
     newRecord.createAt = newRecord.createAt || new Date().toISOString();
+    newRecord.id = createRecordID();
     this.$store.commit("editRecordList", newRecord);
   }
   recordChange() {
