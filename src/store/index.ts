@@ -20,7 +20,7 @@ const store = new Vuex.Store({
       },
       note: "",
       type: "-",
-      amount: 0,
+      amount: "0",
     },
   },
   mutations: {
@@ -144,7 +144,7 @@ const store = new Vuex.Store({
           },
           note: "",
           type: "-",
-          amount: 0,
+          amount: "0",
         };
       } else if (state.record.type === "+") {
         state.record = {
@@ -156,7 +156,7 @@ const store = new Vuex.Store({
           },
           note: "",
           type: "+",
-          amount: 0,
+          amount: "0",
         };
       } else {
         window.alert("出错了！");
@@ -173,7 +173,7 @@ const store = new Vuex.Store({
         },
         note: "",
         type: "-",
-        amount: 0,
+        amount: "0",
       };
     },
   },
