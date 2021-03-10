@@ -14,7 +14,7 @@
     </div>
     <ol class="content">
       <li class="item">
-        <span>金额</span><input type="text" v-model="record.amount" />
+        <span>金额</span><input type="number" v-model="record.amount" />
       </li>
       <li class="item">
         <span>备注</span><input type="text" v-model="record.note" />

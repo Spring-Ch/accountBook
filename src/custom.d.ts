@@ -4,7 +4,7 @@ type RecordItem = {
   selectedTag: Tag;
   note: string;
   type: string;
-  amount: number;
+  amount: string;
   createAt?: string;
 };
 // 全局定义Tag类型

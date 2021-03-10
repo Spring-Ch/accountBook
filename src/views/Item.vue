@@ -93,7 +93,7 @@ export default class Statistics extends Vue {
     }
     for (const k in result) {
       result[k].total = result[k].items.reduce(
-        (sum, item) => sum + item.amount,
+        (sum, item) => sum + parseFloat(item.amount),
         0
       );
     }
